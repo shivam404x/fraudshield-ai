@@ -9,6 +9,8 @@ import sys
 import json
 import sqlite3
 import random
+import tempfile
+import shutil
 from datetime import datetime, timedelta
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,16 +22,57 @@ if CURRENT_DIR not in sys.path:
 
 DB_FILE = os.path.join(CURRENT_DIR, "fraudshield.db")
 
+def resolve_db_path():
+    """Ensures database is in a writable location, copying to /tmp in read-only container environments."""
+    db_dir = os.path.dirname(DB_FILE)
+    try:
+        if os.path.exists(DB_FILE):
+            try:
+                os.chmod(DB_FILE, 0o666)
+            except Exception:
+                pass
+        test_file = os.path.join(db_dir, ".write_test")
+        with open(test_file, "w") as f:
+            f.write("ok")
+        if os.path.exists(test_file):
+            os.remove(test_file)
+        return DB_FILE
+    except Exception:
+        tmp_db = os.path.join(tempfile.gettempdir(), "fraudshield.db")
+        if not os.path.exists(tmp_db) and os.path.exists(DB_FILE):
+            try:
+                shutil.copy2(DB_FILE, tmp_db)
+                os.chmod(tmp_db, 0o666)
+            except Exception:
+                pass
+        return tmp_db
+
+ACTIVE_DB_FILE = resolve_db_path()
+
 # Path to PostgreSQL configuration:
 # When migrating from SQLite prototype to production PostgreSQL:
 # set DATABASE_URL=postgresql://user:password@hostname:5432/fraudshield
-DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DB_FILE}")
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{ACTIVE_DB_FILE}")
 
 
 def get_connection():
-    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
-    conn.row_factory = sqlite3.Row
-    return conn
+    global ACTIVE_DB_FILE
+    try:
+        conn = sqlite3.connect(ACTIVE_DB_FILE, check_same_thread=False, timeout=15)
+        conn.row_factory = sqlite3.Row
+        return conn
+    except sqlite3.OperationalError:
+        tmp_db = os.path.join(tempfile.gettempdir(), "fraudshield.db")
+        if ACTIVE_DB_FILE != tmp_db and os.path.exists(DB_FILE):
+            try:
+                shutil.copy2(DB_FILE, tmp_db)
+            except Exception:
+                pass
+            ACTIVE_DB_FILE = tmp_db
+            conn = sqlite3.connect(ACTIVE_DB_FILE, check_same_thread=False, timeout=15)
+            conn.row_factory = sqlite3.Row
+            return conn
+        raise
 
 
 def init_db():

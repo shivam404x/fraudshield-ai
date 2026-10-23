@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application assets
 COPY backend/ ./backend/
+RUN chmod -R 777 /app/backend
 COPY scripts/ ./scripts/
 COPY public/ ./public/
 COPY server.cjs ./

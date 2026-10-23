@@ -222,8 +222,13 @@ def analyze_transaction(req: TransactionAnalyzeRequest):
     }
 
     if req.save_to_db:
-        saved_txn = insert_transaction(record)
-        return saved_txn
+        try:
+            saved_txn = insert_transaction(record)
+            if saved_txn:
+                return saved_txn
+        except Exception as e:
+            print(f"[Warning] Failed to insert transaction to ledger: {e}")
+            return record
 
     # If save_to_db is false, return record with analysis directly
     return record
@@ -372,8 +377,14 @@ def simulate_single(req: SimulateRequest = SimulateRequest()):
         "is_simulated": 1
     }
 
-    saved = insert_transaction(record)
-    return saved
+    try:
+        saved = insert_transaction(record)
+        if saved:
+            return saved
+    except Exception as e:
+        print(f"[Warning] Failed to insert simulated transaction: {e}")
+        return record
+    return record
 
 
 @app.get("/api/dataset/limitations", tags=["Documentation"])
