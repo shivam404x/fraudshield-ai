@@ -29,10 +29,13 @@ const MIME_TYPES = {
 // Check if Python backend should be spawned
 let pythonProcess = null;
 if (process.env.AUTO_START_PYTHON !== 'false') {
-  console.log('[Gateway] Starting Python FastAPI backend...');
-  pythonProcess = spawn('python', ['backend/run_server.py'], {
+  console.log(`[Gateway] Starting Python FastAPI backend on port ${BACKEND_PORT}...`);
+  const pythonCmd = process.env.PYTHON_BIN || 'python';
+  pythonProcess = spawn(pythonCmd, ['backend/run_server.py'], {
     stdio: 'inherit',
     shell: true,
+    cwd: __dirname,
+    env: { ...process.env, PORT: String(BACKEND_PORT), BACKEND_PORT: String(BACKEND_PORT) }
   });
 
   pythonProcess.on('error', (err) => {

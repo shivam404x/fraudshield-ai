@@ -13,7 +13,8 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    # Support cloud environments where BACKEND_PORT takes precedence over external gateway PORT
+    port = int(os.environ.get("BACKEND_PORT", 8000))
     print(f"==================================================")
     print(f"  Starting FraudShield AI FastAPI REST Server    ")
     print(f"  Target: http://127.0.0.1:{port}                ")
