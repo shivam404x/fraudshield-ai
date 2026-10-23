@@ -1,0 +1,146 @@
+{
+  "timestamp": "2026-10-22T21:39:08.618593Z",
+  "dataset": "IEEE-CIS E-Commerce Fraud Detection (80k train, 20k test)",
+  "train_samples": 80000,
+  "test_samples": 20000,
+  "validation_strategy": "Chronological Out-of-Time Split (80% train / 20% validation by TransactionDT)",
+  "evaluation_metrics": {
+    "roc_auc": 0.89878,
+    "auroc": 0.89878,
+    "auprc": 0.55792,
+    "pr_auc": 0.55792,
+    "accuracy": 0.97181,
+    "precision": 0.46918,
+    "recall": 0.5619,
+    "f1_score": 0.51138,
+    "optimal_f1": 0.56044,
+    "optimal_threshold": 0.66,
+    "true_negatives": 15313,
+    "false_positives": 267,
+    "false_negatives": 184,
+    "true_positives": 236
+  },
+  "model_architecture": {
+    "algorithm": "HistGradientBoostingClassifier",
+    "loss": "log_loss",
+    "class_weight": "balanced",
+    "learning_rate": 0.07,
+    "max_iter": 160,
+    "max_leaf_nodes": 45,
+    "min_samples_leaf": 25,
+    "features_count": 437
+  },
+  "confusion_matrix": [
+    [
+      15313,
+      267
+    ],
+    [
+      184,
+      236
+    ]
+  ],
+  "model_name": "HistGradientBoostingClassifier",
+  "feature_importances": [
+    {
+      "feature": "TransactionAmt_log",
+      "importance": 0.1379,
+      "importance_pct": 13.79
+    },
+    {
+      "feature": "C1",
+      "importance": 0.1142,
+      "importance_pct": 11.42
+    },
+    {
+      "feature": "C13",
+      "importance": 0.0934,
+      "importance_pct": 9.34
+    },
+    {
+      "feature": "card1",
+      "importance": 0.0844,
+      "importance_pct": 8.44
+    },
+    {
+      "feature": "card2",
+      "importance": 0.074,
+      "importance_pct": 7.4
+    },
+    {
+      "feature": "addr1",
+      "importance": 0.0629,
+      "importance_pct": 6.29
+    },
+    {
+      "feature": "dist1",
+      "importance": 0.0566,
+      "importance_pct": 5.66
+    },
+    {
+      "feature": "Transaction_hour",
+      "importance": 0.0503,
+      "importance_pct": 5.03
+    },
+    {
+      "feature": "D1",
+      "importance": 0.0465,
+      "importance_pct": 4.65
+    },
+    {
+      "feature": "D2",
+      "importance": 0.0402,
+      "importance_pct": 4.02
+    },
+    {
+      "feature": "P_emaildomain",
+      "importance": 0.0368,
+      "importance_pct": 3.68
+    },
+    {
+      "feature": "ProductCD",
+      "importance": 0.0339,
+      "importance_pct": 3.39
+    },
+    {
+      "feature": "id_01",
+      "importance": 0.031,
+      "importance_pct": 3.1
+    },
+    {
+      "feature": "DeviceType",
+      "importance": 0.0276,
+      "importance_pct": 2.76
+    },
+    {
+      "feature": "card4",
+      "importance": 0.0232,
+      "importance_pct": 2.32
+    },
+    {
+      "feature": "TransactionAmt_decimal",
+      "importance": 0.0203,
+      "importance_pct": 2.03
+    },
+    {
+      "feature": "C2",
+      "importance": 0.0189,
+      "importance_pct": 1.89
+    },
+    {
+      "feature": "D15",
+      "importance": 0.0174,
+      "importance_pct": 1.74
+    },
+    {
+      "feature": "V307",
+      "importance": 0.016,
+      "importance_pct": 1.6
+    },
+    {
+      "feature": "V310",
+      "importance": 0.0145,
+      "importance_pct": 1.45
+    }
+  ]
+}

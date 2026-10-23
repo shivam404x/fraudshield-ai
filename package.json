@@ -1,0 +1,33 @@
+{
+  "name": "fraudshield-ai",
+  "private": true,
+  "version": "2.0.0",
+  "description": "FraudShield AI — Intelligent E-commerce Fraud Detection System (Deep Data Hackathon 2026)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node server.cjs",
+    "server": "node server.cjs",
+    "server:py": "python backend/run_server.py",
+    "train:ml": "python backend/ml/dataset_generator.py && python backend/ml/train_model.py",
+    "test:py": "python backend/tests/test_api.py",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "lucide-react": "^1.57.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "recharts": "^3.10.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.30",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.3.0"
+  }
+}
